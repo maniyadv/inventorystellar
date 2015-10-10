@@ -1,33 +1,106 @@
-<html><head>
-        <meta charset="utf-8">
+<!DOCTYPE html>
+	<!--[if lte IE 6]><html class="preIE7 preIE8 preIE9"><![endif]-->
+	<!--[if IE 7]><html class="preIE8 preIE9"><![endif]-->
+	<!--[if IE 8]><html class="preIE9"><![endif]-->
+	<!--[if gte IE 9]><!-->
+<html>
+	<!--<![endif]-->
+	<head>
+		<title>FabHotels</title>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-        <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
         <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href="http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css" rel="stylesheet" type="text/css">
         <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" type="text/css">
+        <style type="text/css">
+
+		</style>
+	</head>
+    <body data-spy="scroll">
+		<div class="section">
+			<div class="container">
+				<div class="row">
+
+				<form class="navbar-form" >
+					<h2>Booking</h2>
+	
+					<div class="form-group">
+						<?php echo 'Booking Intensity'; ?> </br> 
+						<select class="form-control" name="intensity" id='intensity'>
+							<option value="----">--Select--</option>
+							<option value="slow">Slow</option>
+							<option value="medium">Medium</option>
+							<option value="fast">Fast</option>
+		                </select>
+					</div>
+					</br> </br> 
+
+					<div class="form-group">
+						<div class='input-group date' id='checkin'>
+							<?php echo 'Check-in'; ?> </br> 
+							<input type="date" class="form-control" name="checkin" >
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class='input-group date' id='checkout'>
+							<?php echo 'Check-out'; ?> </br> 
+							<input type="date" class="form-control" name="checkout" >
+						</div> 
+					</div>
+
+					<div class="form-group">
+						<div class='input-group date' id='rooms'>
+							<?php echo 'No. of Rooms'; ?> </br> 
+							<input type="text" class="form-control" name="rooms" placeholder="<?php echo '1'; ?>" >
+						</div> 
+					</div>
+
+					<div class="form-group">
+						<?php echo '&nbsp'; ?> </br> 
+						<input type="button" class="btn btn-default" value="Book" > 
+					</div>
+				</form>
+				</div>
+			</div>
+		</div>
+	</body>
+
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        // Intensity field 
+		$('#intensity').on('change', function (e) {
+        	console.log('Intensity: '+ $('#intensity').val());
+        });
+
+        // Current Date setting 
+		var d = new Date();
+    	var checkinDate = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate();
+    	var checkoutDate = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + (d.getDate()+2);
+    	$('input[name=checkin]').val(checkinDate);
+    	$('input[name=checkout]').val(checkoutDate);
+
+        // Check-in Date field 
+    	$('#checkin').on('change', function (e) {
+        	console.log('Check-in: '+ $('input[name=checkin]').val());
+        });
+
+    	// Check-out Date field 
+        $('#checkout').on('change', function (e) {
+        	console.log('Check-out: '+ $('input[name=checkout]').val());
+        });
+
+    	// Rooms field 
+        $('#rooms').on('change', function (e) {
+        	console.log('Rooms: '+ $('input[name=rooms]').val());
+        });
     	
-    	
-    	<style>
-    	
-
-    	
-    	</style>
-    
-    
-    </head>
-<body data-spy="scroll">
-<div class="section">
-	<div class="container">
-		<div class="row">
-	</div>
-</div>
-</body>
-
-<script type="text/javascript">
-
-
-</script>
-
+    });
+	</script>
 </html>
