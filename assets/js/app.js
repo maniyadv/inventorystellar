@@ -7,8 +7,9 @@ $(document).ready(function () {
     processFields();
 });
 
-	// Book button 
-$( '#book' ).click(function() {
+// Book button click handling 
+$('#book').click(function() {
+
 	processBooking();
 });
 
@@ -76,7 +77,7 @@ function validateInput() {
 	if (!$('input[name=rooms]').val()) {
     	$('input[name=rooms]').val(DEFAULT_ROOMS);
 	} else 
-	if (!$('input[name=rooms]').val() == '0') {
+	if ($('input[name=rooms]').val() == '0') {
 		result['error'] = 'Cannot book 0 rooms!';
 	}
 

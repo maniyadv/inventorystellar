@@ -14,8 +14,9 @@
         <link href='http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
         <link href='http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css' rel='stylesheet' type='text/css'>
         <link href='//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css' rel='stylesheet' type='text/css'>
-        <style type='text/css'>
+        <link href='assets/css/style.css' rel='stylesheet' type='text/css'>
 
+        <style type='text/css'>
 		</style>
 	</head>
     <body data-spy='scroll'>
@@ -60,7 +61,7 @@
 					<div class='form-group'>
 						<div class='input-group date' id='book'>
 							<?php echo '&nbsp'; ?> </br> 
-							<input type='button' class='btn btn-default' name='book' value='Book' > 
+							<input type='button' class='btn btn-primary' name='book' value='Book' > 
 						</div>
 					</div>
 				</form>
