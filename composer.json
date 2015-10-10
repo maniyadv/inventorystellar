@@ -1,0 +1,5 @@
+{
+    "require": {
+        "wrench/wrench": "dev-master"
+    }
+}
