@@ -1,7 +1,6 @@
 /* Websocket Implementation */
 
 // Constants 
-var PUBLIC_DNS_URL = '127.0.1.1';
 
 // Ready 
 $(document).ready(function() {
@@ -39,7 +38,7 @@ function init() {
 			var dataObj = new Object();
 			dataObj.t = "search";
 			dataObj.type= "auto";
-			var msg = createandSendMessage(dataObj);
+			createandSendMessage(dataObj);
 		};
 
 		socket.onmessage = function(msg) {
@@ -58,7 +57,7 @@ function init() {
 
 // Connect to socket url
 function connect() {
-	socketurl = PUBLIC_DNS_URL;
+	socketurl = HOST_NAME;
 	if (socketurl == '') {
 		log('Enter valid url for connection');
 		return;
@@ -161,8 +160,14 @@ function routeMessage(msg) {
 
 			switch(msgData['t']) {
 				case "search":
-					autoSearch(data);
-					$('.bookinfo').show();
+					if (msgData['type'] == "auto") {
+						autoSearch(data);
+						$('.currentinfo').show();
+						$('.bookinfo').show();
+					} else {
+						manualSearch(data);
+						$('.searchinfo').show();
+					}
 					break;
 
 				case "update":
@@ -187,63 +192,43 @@ function updateAvailability(data) {
 	}
 }
 
-// Parse auto search data - old 
-function oldAutoSearch(data) {
-
-	$('#availability').html('');
-
-	$('#availability').append('<thead><tr class="list_table">');
-	for(var key in data) {
-		$('.list_table').append('<th class="select'+data[key].id+'">'+data[key].name+'</th>');
-		//$('#availability').append('<div class="dateavail">'+currDate+'</div>');
-	}
-	$('.list_table').append('</tr></thead>');
-
-	$('#availability').append('<tbody><tr class="availability_table">');
-	for(var key in data) {
-		$('.availability_table').append('<td class="avail'+data[key].id+'">'+data[key].info[currDate]+'</td>');
-	}
-	$('.availability_table').append('</tr></tbody>');
-
-}
-
 // Parse auto search data 
 function autoSearch(data) {
 	var roomCount = 0;
 	$('.totalrooms').html('');
-	
+
 	$('#availability').html('');
+	$('#availability').html('<div class="hotel_list"></div><div class="availability_list"></div>');
 
-	$('#availability').append('<div class="hotel_list">');
-	for(var key in data) {
-		$('.hotel_list').append('<span class="autorow mselect'+data[key].id+'">'+data[key].name+'</span>');
-	}
-	$('.hotel_list').append('</div>');
-
-	$('#availability').append('<div class="availability_list">');
 	for(var key in data) {
 		roomCount = parseInt(roomCount) + parseInt(data[key].info[currDate]);
+		$('.hotel_list').append('<span class="autorow mselect'+data[key].id+'">'+data[key].name+'</span>');
 		$('.availability_list').append('<span class="autorow mavail'+data[key].id+'">'+data[key].info[currDate]+'</span>');
 	}
-	$('.availability_list').append('</div>');
 
-	$('.totalrooms').html('Total Rooms Available: ' +roomCount);
+//	$('.currentdate').html('Date: ' +currDate);
+	$('.totalrooms').html('Current availability: ' +roomCount);
 }
 
 // Parse manual search data 
 function manualSearch(data) {
-
 	$('#listing').html('');
 
-	$('#listing').append('<div class="hotel_list">');
 	for(var key in data) {
-		$('.hotel_list').append('<span class="mrow mselect'+data[key].id+'">'+data[key].name+'</span>');
-	}
-	$('.hotel_list').append('</div>');
+		$('#listing').append('<div class="'+data[key].id+'">');
+		$('#listing .'+data[key].id).append('<span class="mrow mselect'+data[key].id+'">'+data[key].name+'</span>');
 
-	$('#listing').append('<div class="availability_list">');
-	for(var key in data) {
-		$('.availability_list').append('<span class="mrow mavail'+data[key].id+'">'+data[key].info[currDate]+'</span>');
+		for(var keys in data[key].info) {
+			$('#listing .'+data[key].id).append('<span class="mrow mavail'+data[key].id+'">'+data[key].info[keys]+'</span>');
+		}
+
+		$('#listing .'+data[key].id).append('<div class="brow form-group"><div class="input-group" id="search"'+data[key].id+'><input type="button" class="btn btn-primary" name="search" value="Book"></div></div>');
 	}
-	$('.availability_list').append('</div>');
+
+	checkAvailability();
+}
+
+// Check room availability 
+function checkAvailability() {
+	
 }
