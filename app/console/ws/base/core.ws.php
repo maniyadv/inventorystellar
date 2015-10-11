@@ -67,7 +67,7 @@ class Core {
 			
 			$response["s"]    = "1";
 			$response["t"]    = $param["t"];
-			$response["m"]    = "Loaded initial data";
+			$response["m"]    = "Availability data updated";
 			$response["d"]    = $this->findAvailableHotels($param);
 			$response["type"] = $param["type"];
 			$param["client"]->send(json_encode($response));			
@@ -157,6 +157,7 @@ class Core {
 	 * @param unknown_type $param
 	 */
 	function book($param) {
+		$response    = array();
 		$canbebooked = array();
 		$booking     = array();
 		
@@ -230,7 +231,11 @@ class Core {
 		if ($canbebooked["s"]) {			
 			$response['s']   = "1";
 			$response["t"]   = $param["t"];
-			$response['m']   = "Successfully booked required rooms";
+			
+			if (!isset($param["bot"])) {
+				$response['m']   = "Successfully booked required rooms";
+			}
+			
 			$response["bookings"] = $booking;
 			$param['client']->send(json_encode($response));
 			
@@ -238,7 +243,11 @@ class Core {
 			$shrotage = $canbebooked['d'];
 			$response['s'] = "0";
 			$response["t"] = $param["t"];
-			$response['m'] = "Cannot Book. Falling short of {$shortage} rooms";
+			
+			if (!isset($param["bot"])) {
+				$response['m'] = "Cannot Book. Falling short of {$shortage} rooms";								
+			}
+
 			$param['client']->send(json_encode($response));
 		}
 		
