@@ -20,13 +20,20 @@
 		</style>
 	</head>
     <body data-spy='scroll'>
-		<div class='section'>
-			<div class='container'>
-				<div class='row'>
+
+    	<!-- Socket Status -->
+    	<div id="status"></div>
+
+    	<!-- Content Section -->
+    	<div class='section'>
+    	    <div class='container'>
+    	    	<div class='row'>
 
 				<form class='navbar-form' >
+
 					<h2>Booking</h2>
-	
+
+					<!-- Booking Intensity -->
 					<div class='form-group'>
 						<?php echo 'Booking Intensity'; ?> </br> 
 						<select class='form-control' name='intensity' id='intensity'>
@@ -37,6 +44,16 @@
 					</div>
 					</br> </br> 
 
+					<!-- Email -->
+					<div class='form-group'>
+						<div class='input-group date' id='email'>
+							<?php echo 'Email'; ?> </br> 
+							<input type='email' class='form-control' name='email' placeholder='name@example.com' >
+						</div>
+					</div>
+					</br> </br> 
+
+					<!-- Check-in Date -->
 					<div class='form-group'>
 						<div class='input-group date' id='checkin'>
 							<?php echo 'Check-in'; ?> </br> 
@@ -44,6 +61,7 @@
 						</div>
 					</div>
 
+					<!-- Check-out Date -->
 					<div class='form-group'>
 						<div class='input-group date' id='checkout'>
 							<?php echo 'Check-out'; ?> </br> 
@@ -51,6 +69,7 @@
 						</div> 
 					</div>
 
+					<!-- Rooms -->
 					<div class='form-group'>
 						<div class='input-group date' id='rooms'>
 							<?php echo 'No. of Rooms'; ?> </br> 
@@ -58,6 +77,7 @@
 						</div> 
 					</div>
 
+					<!-- Book Button -->
 					<div class='form-group'>
 						<div class='input-group date' id='book'>
 							<?php echo '&nbsp'; ?> </br> 
@@ -65,6 +85,7 @@
 						</div>
 					</div>
 				</form>
+
 				</div>
 			</div>
 		</div>
@@ -74,6 +95,7 @@
     <script type='text/javascript' src='http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js'></script>
     <script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js'></script>
     <script type='text/javascript' src='assets/js/app.js'></script>
+    <script type='text/javascript' src='assets/js/ws.js'></script>
 
     <script type='text/javascript'>
 	</script>
