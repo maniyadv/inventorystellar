@@ -23,6 +23,7 @@ class RouteManager {
 	public function route($param) {
 		switch ($param["t"]) {
 			case "search"  : $this->search($param);  break;
+			case "book"    : $this->book($param);  break;			
 		}
 	}
 	
@@ -32,6 +33,14 @@ class RouteManager {
 	 */
 	public function search($param) {
 		$this->_core->search($param);
+	}
+	
+	/**
+	 * Method to book rooms
+	 * @param unknown_type $param
+	 */
+	public function book($param) {
+		$this->_core->book($param);		
 	}
 	
 	
