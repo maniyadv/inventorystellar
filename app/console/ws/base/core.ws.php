@@ -31,7 +31,7 @@ class Core {
 								'I', 'J', 'K', 'L', 'M', 'N');
 		
 		foreach($hotels["hotels"] as $key => $val) {
-			$conf[$val]['info']  = array('avail' => ''.rand(100, 1000), 'date' => date('Y-m-d'));
+			$conf[$val]['info']  = array(date('Y-m-d') => ''.rand(100, 1000));
 			$conf[$val]['name']  = 'Hotel - '.$val;
 			$conf[$val]['id']    = $val;
 		}
@@ -47,8 +47,39 @@ class Core {
 	public function search($param) {
 		$response = array();
 		
-		$response["s"] = "1";
-		$response["d"] = $this->_coreconfig;
-		$param["client"]->send(json_encode($response));
+		if($param["type"] == "auto") {
+			$response["s"]    = "1";
+			$response["t"]    = $param["t"];
+			$response["m"]    = "Loaded initial data";
+			$response["d"]    = $this->_coreconfig;
+			$response["type"] = $param["type"];
+			$param["client"]->send(json_encode($response));			
+		}
+		
+		/* if ($param["type"] == "manual") {
+						
+			$hotels = $this->findAvailableHotels($param);
+						
+			$response["s"] = "1";
+			$response["d"] = $hotels;
+			$param["client"]->send(json_encode($response));
+		} */
+
+	}
+	
+	/**
+	 * Method to find available hotels
+	 * @param unknown_type $param
+	 */
+	public function findAvailableHotels($param) {
+		$roomsreq = $param["rooms"];
+		$checkin  = $param["checkin"];
+		$checkout = $param["checkout"];
+		
+		$conf = $this->_coreconfig;
+		
+		foreach ($conf as $key => $val){
+			
+		} 
 	}
 }
