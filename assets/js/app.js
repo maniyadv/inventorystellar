@@ -3,11 +3,10 @@ var DEFAULT_ROOMS = 1;
 var DEFAULT_IN_PROCESS = 'Booking in process!';
 var DEFAULT_BOOKING_DAYS = 2;
 
-
 // Websocket Global object variable
 var socket = null;
 
-
+// Ready 
 $(document).ready(function () {
     processFields();
 });
@@ -98,118 +97,3 @@ function sendRequest(data) {
 	toastr.success(DEFAULT_IN_PROCESS);
 	console.log(data);
 }
-
-
-// ################### Websocket Implementation Starts ###################
-
-// create socket method
-function createSocket(host) {
-	try {
-        if (window.WebSocket)
-            return new WebSocket(host);
-        else if (window.MozWebSocket)
-            return new MozWebSocket(host);
-	} catch (ex) { 
-		log("failed creating socket connection  at - " + host);
-    }
-}
-
-
-// initiate socket connection
-function init() {
-	if(socket != null) {
-		socket.close(); 
-	}                 
-    var host = "ws://" + socketurl + ":9400/hook";
-    
-    try {
-        socket = createSocket(host);
-        log('WebSocket - status ' + socket.readyState);
-
-        socket.onopen 		= function(msg) {
-			                    log("Welcome - status " + this.readyState);
-        						log("Connected to - " + host);
-        						document.getElementById("status").style.backgroundColor = "#acdfb5";                   
-        					 };
-        				
-        socket.onmessage    = function(msg) {
-
-        					};
-        					
-        socket.onclose      = function(msg) {
-                               log("Disconnected - status " + this.readyState);
-           					   document.getElementById("status").style.backgroundColor = "#ecc8c8";
-        					};
-    }
-    catch (ex) {
-        log(ex);
-    }              
-}
-
-// send to socket connection
-function send(msg) {
-    try {  
-       if(socket != null)  { socket.send(msg);  }
-        			 else  { log("issue with socket connection"); } 
-    } catch (ex) {
-        log(ex);
-    }
-}
-
-
-// connect to socket url
-function connect() {
-	socketurl = "socket_url";
-	if (socketurl == "") {
-		log("Enter valid url for connection");
-		return;
-	}
-    
-	//$("#logtexts").html("");
-	//$("#connectbtn").text("connecting ...");
-	if (socket != null) {
-		socket.close();
-	}
-    socket  = null;
-
-	// initiate new connection
-	init();
-}
-
-
- 
-// quit socket connection
-function quit() {
-    if(socket != null) {
-        socket.close();
-        socket = null;                        
-    } else {
-        log("socket already in disconnected state");
-    }
-}
-
-//################### Websocket Implementation Ends ###################
-
-
-
-
-// Utilities
-function log(msg) {
-	  //document.getElementById("logtexts").innerHTML += "<br>[SOCKET] " + msg;
-      //$('#log').animate({scrollTop: $('#log').prop("scrollHeight")}, 500);
-	  console.log(msg);
-}
-function logresponse(msg) {
-	 //document.getElementById("logtexts").innerHTML += "<br><text class='responseTxt'>[SOCKET] " + msg + "</text>";
-	 //$('#log').animate({scrollTop: $('#log').prop("scrollHeight")}, 500);
-}
-
-/*function setmsg() {
-    $("#msg").text($("#tasklist").val());
-}
-function onkey(event) {
-    if (event.keyCode == 13) {
-        send();
-    }
-}*/
-
