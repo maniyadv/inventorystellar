@@ -61,7 +61,6 @@ function processBooking(id) {
 
     	// TODO: Remove useless string in front of id - Unique 
     	data.hotelid = id.substring(5);
-    	console.log(data);
 
     	var infoStr = '';
     	infoStr = 'BOOKING DETAILS : ' + ' </br> ' + 

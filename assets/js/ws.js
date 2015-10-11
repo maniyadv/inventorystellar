@@ -1,6 +1,9 @@
 /* Websocket Implementation */
 
 // Constants 
+var hotelids = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
+var initBot = false;
+var localData = [];
 
 // Ready 
 $(document).ready(function() {
@@ -163,6 +166,11 @@ function routeMessage(msg) {
 					} else {
 						manualSearch(data);
 					}
+
+					if (!initBot) {
+						initBot = true;
+						setInterval(function(){botBooking();}, 10000);
+					}
 					break;
 
 				case "update":
@@ -170,7 +178,9 @@ function routeMessage(msg) {
 					break;
 
 				case "book":
-					postBooking(data);
+					if (msgData['m']) {
+						postBooking(data);
+					}
 					break;
 
 				default:
@@ -179,7 +189,7 @@ function routeMessage(msg) {
 		}
 
 		if (msgData['m']) {
-			displayInfoToast(msgData['m'])
+			//displayInfoToast(msgData['m']);
 		}
 	}
 }
@@ -217,7 +227,15 @@ function autoSearch(data) {
 		if (data[key].info[currDate]) {
 			roomCount = parseInt(roomCount) + parseInt(data[key].info[currDate]);
 			$('.hotel_list').append('<span class="autorow mselect'+data[key].id+'">'+data[key].name+'</span>');
-			$('.availability_list').append('<span class="autorow mavail'+data[key].id+'">'+data[key].info[currDate]+'</span>');
+
+			if (localData && localData[data[key].id] && localData[data[key].id] != data[key].info[currDate]) {
+				$('.availability_list').append('<span class="autorow mavail'+data[key].id+'" style="background-color:#acdfb5">'+data[key].info[currDate]+'</span>');
+			} else if (data[key].info[currDate] < 1) {
+				$('.availability_list').append('<span class="autorow mavail'+data[key].id+'" style="background-color:#ecc8c8">'+data[key].info[currDate]+'</span>');
+			} else {
+				$('.availability_list').append('<span class="autorow mavail'+data[key].id+'">'+data[key].info[currDate]+'</span>');
+			}
+			localData[data[key].id] = data[key].info[currDate];
 		}
 	}
 
@@ -269,6 +287,19 @@ function postBooking(data) {
 	$('#listing').html('');
 	$('#listing').html('Booking Successful!');
 	$('.searchinfo').show();
+}
 
-	sendAutoSearchRequest();
+// Bot booking 
+function botBooking() {
+	var data = new Object();
+	data.checkin = currDate;
+	data.checkout = currDate;
+	data.rooms = Math.floor(Math.random() * 5) + 1;
+	data.hotelid = hotelids[Math.floor(Math.random()*hotelids.length)];
+
+	data.bot = 'bot';
+	data.t = "book";
+	data.cd = currDate;
+
+	createandSendMessage(data);
 }
