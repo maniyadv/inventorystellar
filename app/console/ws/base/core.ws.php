@@ -8,7 +8,6 @@
  */
 
 
-
 class Core {
 	protected $_coreconfig = array();
 	protected $_bookings   = array();
@@ -17,7 +16,7 @@ class Core {
 	 * Constructor for class
 	 */
 	function __construct() {
-		$this->loadConfig();
+		$this->loadConfig();		
 	}
 	
 	/**
@@ -31,7 +30,7 @@ class Core {
 								'I', 'J', 'K', 'L', 'M', 'N');
 		
 		foreach($hotels["hotels"] as $key => $val) {
-			$conf[$val]['info']  = array(date('Y-m-d') => ''.rand(100, 1000));
+			$conf[$val]['info']  = array(date('Y-m-d') => ''.rand(10, 50));
 			$conf[$val]['name']  = 'Hotel - '.$val;
 			$conf[$val]['id']    = $val;
 		}
@@ -56,14 +55,14 @@ class Core {
 			$param["client"]->send(json_encode($response));			
 		}
 		
-		/* if ($param["type"] == "manual") {
+		 if ($param["type"] == "manual") {
 						
 			$hotels = $this->findAvailableHotels($param);
 						
 			$response["s"] = "1";
 			$response["d"] = $hotels;
 			$param["client"]->send(json_encode($response));
-		} */
+		} 
 
 	}
 	
@@ -72,14 +71,73 @@ class Core {
 	 * @param unknown_type $param
 	 */
 	public function findAvailableHotels($param) {
+		$this->say("calculating hotel");
+		
 		$roomsreq = $param["rooms"];
 		$checkin  = $param["checkin"];
 		$checkout = $param["checkout"];
 		
-		$conf = $this->_coreconfig;
-		
-		foreach ($conf as $key => $val){
+		// initial hotels data, remove all info related to availability
+		$hotelsdata = $this->_coreconfig;
+		foreach ($this->_coreconfig as $key => $val) {
+			$hotelsdata[$key]['info'] = array();
+		}
 			
-		} 
+		
+		// Format check in checkout dates
+		$start   = new DateTime($checkin);
+		$end     = new DateTime($checkout);
+		
+		$days = $end->diff($start)->format("%a");
+		
+		$date = $start;
+		$date = $date->format('Y-m-d');
+				
+		
+		// Loop till number of days
+		for($i = 0; $i <= $days; $i++) {
+
+			// update start day for next day
+			if($i != 0) {				
+				$date = $start->modify('+1 day');
+				$date = $date->format('Y-m-d');				
+			}
+			
+			// Get current hotel config	
+			$conf = $this->_coreconfig;
+			
+						
+			foreach ($conf as $key => $val) {
+				
+				// booked rooms
+				$booked = 0;
+				
+				$availarr = array_values($conf[$key]['info']);
+				$baseavail = $availarr[0];
+				
+
+				if (isset($this->_bookings) && !empty($this->_bookings)) {
+					if (isset($this->_bookings[$val])) {
+						if (isset($this->_bookings[$val][$date])) {
+							if (isset($this->_bookings[$val][$date]["rooms"])) {
+								$booked = $this->_bookings[$val][$date]["rooms"];
+							}
+					
+						}
+					}
+				}
+				
+				$currentavail = $baseavail - $booked;			
+				$hotelsdata[$key]['info'][$date] = "".$currentavail;
+			}
+			
+		}
+				
+		return $hotelsdata;		 
+	}
+	
+	function say($msg, $priority="info") {
+		$date = date('Y-m-d H:i:s');
+		printf("[SOCKET][%s](%s) %s%s", $priority, $date, $msg, PHP_EOL);
 	}
 }
