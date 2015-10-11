@@ -1,6 +1,7 @@
 /* Websocket Implementation */
 
 // Constants 
+var PUBLIC_DNS_URL = '127.0.1.1';
 
 // Ready 
 $(document).ready(function() {
@@ -24,7 +25,7 @@ function init() {
 	if (socket != null) {
 		socket.close();
 	}
-	var host = 'ws://' + socketurl + ':9400/hook';
+	var host = 'ws://' + socketurl + ':9660/invnt';
 
 	try {
 		socket = createSocket(host);
@@ -34,10 +35,19 @@ function init() {
 			log('Welcome - status ' + this.readyState);
 			log('Connected to - ' + host);
 			document.getElementById('status').style.backgroundColor = '#acdfb5';
+
+			var dataObj = new Object();
+			dataObj.t = "search";
+			dataObj.type= "auto";
+			var msg = createMessage(dataObj);
+			log(msg);
+
+			socket.send(msg);
 		};
 
 		socket.onmessage = function(msg) {
-			
+			log('WebSocket - message received ' + msg);
+			routeMessage(msg);
 		};
 
 		socket.onclose = function(msg) {
@@ -51,7 +61,7 @@ function init() {
 
 // Connect to socket url
 function connect() {
-	socketurl = 'socket_url';
+	socketurl = PUBLIC_DNS_URL;
 	if (socketurl == '') {
 		log('Enter valid url for connection');
 		return;
@@ -65,7 +75,7 @@ function connect() {
 	socket = null;
 
 	// Initiate new connection
-	//init();
+	init();
 }
 
 // Quit socket connection
@@ -120,3 +130,76 @@ function onKey(event) {
 	}
 }
 */
+
+// Array to json string 
+function createMessage(dataSet) {
+	/*
+	 * For extra arguments 
+	 *
+	if (argSet) {
+		var argResult = JSON.parse(argSet);
+		if (argResult && Object.keys(argResult).length > 0) {
+			for (key in argResult) {
+				dataObj[key] = argResult[key];
+			}
+		}
+	}
+	*
+	*/
+
+	var result = JSON.stringify(dataSet);
+	return result;
+}
+
+// Function to route socket messages 
+function routeMessage(msg) {
+
+	if (msg.data) {
+		var data = msg.data;
+		msgData = JSON.parse(data);
+
+		if (msgData['s'] == "1") {
+			data = msgData['d'];
+
+			switch(msgData['t']) {
+				case "search":
+					parseResponse(data);
+					break;
+
+				case "update":
+					updateData(data);
+					break;
+
+				default:
+					break;
+			}
+
+			if (msgData['m']) {
+				toastr.info(msgData['m']);
+			}
+		}
+	}
+}
+
+// Parse data 
+function parseResponse(data) {
+
+	$('#availability').html('');
+	$('#availability').append('<div class="dateavail">Date: '+currDate+'</div>');
+
+	for(var key in data) {
+		$('#availability').append('<div class="'+data[key].id+'">');
+		$('#availability').append('<span class="hotelname">'+data[key].name+'</span>'+' : ');
+		$('#availability').append('<span class="hotelavail">'+data[key].info[currDate]+'</span>');
+		//$('#availability').append('<div class="dateavail">'+currDate+'</div>');
+		$('#availability').append('</div>');
+	}
+}
+
+// Update data 
+function updateData(data) {
+
+	for(var key in data) {
+//		$('#'+data[key].id.hotelavail).html(data[key].info[currDate]);
+	}
+}

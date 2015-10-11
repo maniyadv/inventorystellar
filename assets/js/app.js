@@ -2,6 +2,9 @@
 var DEFAULT_ROOMS = 1;
 var DEFAULT_IN_PROCESS = 'Booking in process!';
 var DEFAULT_BOOKING_DAYS = 2;
+var cDate = new Date();
+var currDate = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + cDate.getDate();
+	
 
 // Websocket Global object variable
 var socket = null;
@@ -25,9 +28,8 @@ function processFields() {
     });
 
     // Current Date setting 
-	var d = new Date();
-	var checkinDate = d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();
-	var checkoutDate = d.getFullYear() + '-' + (d.getMonth()+1) + '-' + (d.getDate()+DEFAULT_BOOKING_DAYS);
+	var checkinDate = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + cDate.getDate();
+	var checkoutDate = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + (cDate.getDate()+DEFAULT_BOOKING_DAYS);
 	$('input[name=checkin]').val(checkinDate);
 	$('input[name=checkout]').val(checkoutDate);
 
