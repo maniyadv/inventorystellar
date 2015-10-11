@@ -46,44 +46,64 @@
 
 					<!-- Email -->
 					<div class='form-group'>
-						<div class='input-group date' id='email'>
+						<div class='input-group' id='email'>
 							<?php echo 'Email'; ?> </br> 
 							<input type='email' class='form-control' name='email' placeholder='name@example.com' >
 						</div>
 					</div>
 					</br> </br> 
 
-					<!-- Check-in Date -->
+					<!-- Hotel Info -->
 					<div class='form-group'>
-						<div class='input-group date' id='checkin'>
-							<?php echo 'Check-in'; ?> </br> 
-							<input type='date' class='form-control' name='checkin' >
+						<div class='input-group' id='availability'>
+						</div>
+					</div>
+					</br> </br> 
+
+					<!-- Booking Info -->
+					<div class='bookinfo' style='display:block' >
+
+						<!-- Hotel Info -->
+						<div class='form-group'>
+							<div class='input-group' id='checkin'>
+								<?php echo 'Name: '; ?> </br> 
+								<div id='hotelinfo'>Hotel Name</div>
+							</div>
+						</div>
+
+						<!-- Check-in Date -->
+						<div class='form-group'>
+							<div class='input-group date' id='checkin'>
+								<?php echo 'Check-in'; ?> </br> 
+								<input type='date' class='form-control' name='checkin' >
+							</div>
+						</div>
+	
+						<!-- Check-out Date -->
+						<div class='form-group'>
+							<div class='input-group date' id='checkout'>
+								<?php echo 'Check-out'; ?> </br> 
+								<input type='date' class='form-control' name='checkout' >
+							</div> 
+						</div>
+	
+						<!-- Rooms -->
+						<div class='form-group'>
+							<div class='input-group' id='rooms'>
+								<?php echo 'No. of Rooms'; ?> </br> 
+								<input type='text' class='form-control' name='rooms' placeholder='<?php echo '1'; ?>' >
+							</div> 
+						</div>
+	
+						<!-- Book Button -->
+						<div class='form-group'>
+							<div class='input-group' id='book'>
+								<?php echo '&nbsp'; ?> </br> 
+								<input type='button' class='btn btn-primary' name='book' value='Book' > 
+							</div>
 						</div>
 					</div>
 
-					<!-- Check-out Date -->
-					<div class='form-group'>
-						<div class='input-group date' id='checkout'>
-							<?php echo 'Check-out'; ?> </br> 
-							<input type='date' class='form-control' name='checkout' >
-						</div> 
-					</div>
-
-					<!-- Rooms -->
-					<div class='form-group'>
-						<div class='input-group date' id='rooms'>
-							<?php echo 'No. of Rooms'; ?> </br> 
-							<input type='text' class='form-control' name='rooms' placeholder='<?php echo '1'; ?>' >
-						</div> 
-					</div>
-
-					<!-- Book Button -->
-					<div class='form-group'>
-						<div class='input-group date' id='book'>
-							<?php echo '&nbsp'; ?> </br> 
-							<input type='button' class='btn btn-primary' name='book' value='Book' > 
-						</div>
-					</div>
 				</form>
 
 				</div>
