@@ -1,7 +1,7 @@
 // Constants 
 var DEFAULT_ROOMS = 1;
-var DEFAULT_IN_PROCESS = 'Booking in process!';
-var DEFAULT_BOOKING_DAYS = 2;
+var DEFAULT_IN_PROCESS = ' in process!';
+var DEFAULT_BOOKING_DAYS = 0;
 var cDate = new Date();
 var currDate = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + cDate.getDate();
 	
@@ -15,9 +15,9 @@ $(document).ready(function () {
 });
 
 //Book button click handling 
-$('#check').click(function() {
+$('#search').click(function() {
 
-	processAvailabilityCheck();
+	processAvailabilitySearch();
 });
 
 // Book button click handling 
@@ -80,23 +80,21 @@ function processBooking() {
 	}
 }
 
-//Processes check request 
-function processAvailabilityCheck() {
+// Processes search request 
+function processAvailabilitySearch() {
 	var result = validateInput();
 
 	if (result['status'] == 'Y') {
-    	var data = [];
-    	data['intensity'] =  $('#intensity').val();
-    	data['checkin'] =  $('input[name=checkin]').val();
-    	data['checkout'] =  $('input[name=checkout]').val();
-    	data['rooms'] =  $('input[name=rooms]').val();
+    	var data = new Object();
+    	data.checkin =  $('input[name=checkin]').val();
+    	data.checkout =  $('input[name=checkout]').val();
+    	data.rooms =  $('input[name=rooms]').val();
 
     	var infoStr = '';
-    	infoStr = 'BOOKING DETAILS' + ' </br> ' + 
-        		  'Intensity: '+ data['intensity'] + ' </br> ' + 
-    			  'Check-in: '+ data['checkin'] + ' </br> ' + 
-    			  'Check-out: '+ data['checkout'] + ' </br> ' + 
-    			  'Rooms: '+ data['rooms'];
+    	infoStr = 'BOOKING DETAILS : ' + ' </br> ' + 
+    			  'Check-in: '+ data.checkin + ' </br> ' + 
+    			  'Check-out: '+ data.checkout + ' </br> ' + 
+    			  'Rooms: '+ data.rooms;
     	toastr.info(infoStr);
 
     	sendRequest(data);
@@ -127,7 +125,8 @@ function validateInput() {
 
 // Sends request to websocket 
 function sendRequest(data) {
-	toastr.success(DEFAULT_IN_PROCESS);
-	console.log(data);
+	toastr.success('Search' + DEFAULT_IN_PROCESS);
+	data.t = "search";
+	data.type= "manual";
 	createandSendMessage(data);
 }

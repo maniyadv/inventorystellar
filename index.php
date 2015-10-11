@@ -20,6 +20,20 @@
 		</style>
 	</head>
     <body data-spy='scroll'>
+	    <?php 
+			require_once 'config/config.php';
+	
+			$fp = fsockopen(HOST_NAME, 9660, $errno, $errstr, 5);
+			if (!$fp) {
+				// port is closed or blocked
+				// echo "port is not running";
+				shell_exec('php app/console/ws/server.ws.php > /dev/null 2>&1 &');	
+			} else {
+				// port is open and available	
+				// echo "port is running";	
+				fclose($fp);
+			}
+		?>
 
     	<!-- Socket Status -->
     	<div id="status"></div>
@@ -45,12 +59,14 @@
 					</br> </br> 
 
 					<!-- Hotel Info -->
-					<div class='form-group'>
-						<?php echo 'Today'; ?>
-						<div class='totalrooms'><?php echo ' '; ?> </div>
-						<div class='input-group' id='availability'></div>
-					</div>
-					</br> </br> 
+					<div class='currentinfo' style='display:none'>
+						<div class='form-group'>
+							<div class='currentdate'><?php echo ' '; ?> </div>
+							<div class='totalrooms'><?php echo ' '; ?> </div>
+							<div class='input-group' id='availability'></div>
+						</div>
+						</br> </br>
+					</div> 
 
 					<!-- Email -->
 					<div class='form-group'>
@@ -88,13 +104,22 @@
 							</div> 
 						</div>
 
-						<!-- Check Button -->
+						<!-- Search Button -->
 						<div class='form-group'>
-							<div class='input-group' id='check'>
+							<div class='input-group' id='search'>
 								<?php echo '&nbsp'; ?> </br> 
-								<input type='button' class='btn btn-primary' name='check' value='Check' > 
+								<input type='button' class='btn btn-primary' name='search' value='Search' > 
 							</div>
 						</div>
+						</br> </br>
+
+						<!-- Search Info -->
+						<div class='searchinfo' style='display:none'>
+							<div class='form-group'>
+								<div class='input-group' id='listing'></div>
+							</div>
+							</br> </br>
+						</div> 
 					</div>
 
 				</form>
@@ -104,12 +129,13 @@
 		</div>
 	</body>
 
+	<script type='text/javascript'>
+    	var HOST_NAME = '<?php echo HOST_NAME; ?>';
+	</script>
+
 	<script type='text/javascript' src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
     <script type='text/javascript' src='http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js'></script>
     <script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js'></script>
     <script type='text/javascript' src='assets/js/app.js'></script>
     <script type='text/javascript' src='assets/js/ws.js'></script>
-
-    <script type='text/javascript'>
-	</script>
 </html>
