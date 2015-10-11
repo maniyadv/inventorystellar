@@ -222,14 +222,16 @@ class Core {
 		if ($canbebooked) {
 			$this->_bookings = $booking;
 			$response['s'] = "1";
-			$response['msg'] = "Successfully booked required rooms";
+			$response["t"] = $param["t"];
+			$response['m'] = "Successfully booked required rooms";
 			$response["bookings"] = $booking;
 			$param['client']->send(json_encode($response));
 			
 		} else {
 			$shrotage = $canbebooked['d'];
 			$response['s'] = "0";
-			$response['msg'] = "Cannot Book. Falling short of {$shortage} rooms";
+			$response["t"] = $param["t"];
+			$response['m'] = "Cannot Book. Falling short of {$shortage} rooms";
 			$param['client']->send(json_encode($response));
 		}
 		
