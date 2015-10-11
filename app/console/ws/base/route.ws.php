@@ -21,7 +21,7 @@ class RouteManager {
 	 * @param unknown $params
 	 */
 	public function route($param) {
-		switch ($param["T"]) {
+		switch ($param["t"]) {
 			case "search"  : $this->search($param);  break;
 		}
 	}

@@ -11,6 +11,7 @@
 
 class Core {
 	protected $_coreconfig = array();
+	protected $_bookings   = array();
 	
 	/**
 	 * Constructor for class
@@ -30,7 +31,7 @@ class Core {
 								'I', 'J', 'K', 'L', 'M', 'N');
 		
 		foreach($hotels["hotels"] as $key => $val) {
-			$conf[$val]['avail'] = ''.rand(100, 1000);
+			$conf[$val]['info']  = array('avail' => ''.rand(100, 1000), 'date' => date('Y-m-d'));
 			$conf[$val]['name']  = 'Hotel - '.$val;
 			$conf[$val]['id']    = $val;
 		}

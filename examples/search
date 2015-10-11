@@ -1,0 +1,128 @@
+################### Request ##########################
+
+{
+    "t": "search",
+    "type": "auto"
+}
+
+
+
+################### Response ##########################
+
+{
+    "s": "1",
+    "d": {
+        "A": {
+            "info": {
+                "avail": "936",
+                "date": "2015-10-11"
+            },
+            "name": "Hotel - A",
+            "id": "A"
+        },
+        "B": {
+            "info": {
+                "avail": "752",
+                "date": "2015-10-11"
+            },
+            "name": "Hotel - B",
+            "id": "B"
+        },
+        "C": {
+            "info": {
+                "avail": "175",
+                "date": "2015-10-11"
+            },
+            "name": "Hotel - C",
+            "id": "C"
+        },
+        "D": {
+            "info": {
+                "avail": "529",
+                "date": "2015-10-11"
+            },
+            "name": "Hotel - D",
+            "id": "D"
+        },
+        "E": {
+            "info": {
+                "avail": "201",
+                "date": "2015-10-11"
+            },
+            "name": "Hotel - E",
+            "id": "E"
+        },
+        "F": {
+            "info": {
+                "avail": "905",
+                "date": "2015-10-11"
+            },
+            "name": "Hotel - F",
+            "id": "F"
+        },
+        "G": {
+            "info": {
+                "avail": "366",
+                "date": "2015-10-11"
+            },
+            "name": "Hotel - G",
+            "id": "G"
+        },
+        "H": {
+            "info": {
+                "avail": "152",
+                "date": "2015-10-11"
+            },
+            "name": "Hotel - H",
+            "id": "H"
+        },
+        "I": {
+            "info": {
+                "avail": "282",
+                "date": "2015-10-11"
+            },
+            "name": "Hotel - I",
+            "id": "I"
+        },
+        "J": {
+            "info": {
+                "avail": "560",
+                "date": "2015-10-11"
+            },
+            "name": "Hotel - J",
+            "id": "J"
+        },
+        "K": {
+            "info": {
+                "avail": "661",
+                "date": "2015-10-11"
+            },
+            "name": "Hotel - K",
+            "id": "K"
+        },
+        "L": {
+            "info": {
+                "avail": "593",
+                "date": "2015-10-11"
+            },
+            "name": "Hotel - L",
+            "id": "L"
+        },
+        "M": {
+            "info": {
+                "avail": "809",
+                "date": "2015-10-11"
+            },
+            "name": "Hotel - M",
+            "id": "M"
+        },
+        "N": {
+            "info": {
+                "avail": "837",
+                "date": "2015-10-11"
+            },
+            "name": "Hotel - N",
+            "id": "N"
+        }
+    }
+}
