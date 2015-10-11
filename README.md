@@ -16,4 +16,11 @@ A project that helps in analyzing the Hotel Inventory Systems in realtime.
 
 **Installation** 
 
-Simply clone the project and put it in your web directory and open index.php in browser. This will automatically run and load backend server. 
+Simply clone the project and put it in your web directory. 
+Change the HOST_URL in config/config.php to correct ip address of your system or domain you are putting it in.
+
+    if (!defined('HOST_NAME'))  {
+    	define('HOST_NAME', '127.0.1.1');
+    }
+
+Open index.php in browser. This will automatically run and load backend server. 
