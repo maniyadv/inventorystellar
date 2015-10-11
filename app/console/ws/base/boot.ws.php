@@ -13,14 +13,14 @@ use Wrench\Application\Application;
 class HookerApp extends Application {
 	
 	// global variables
-	private $_clients = array();
-	
+	private $_clients   = array();
+	private $_routeman  = array();
 	
 	/**
 	 * Constructor for class
 	 */
 	function __construct() {
-		
+		$this->_routeman = new RouteManager();
 	}
 	
 	
@@ -38,7 +38,8 @@ class HookerApp extends Application {
 	 * @param Connection $client
 	 */
 	public function onDisconnect($client) {
-
+		$id = $client->getId();
+		unset($this->_clients[$id]);
 	}
 	
 	/**
@@ -46,7 +47,23 @@ class HookerApp extends Application {
 	 * (non-PHPdoc)
 	 * @see \Wrench\Application\Application::onData()
 	 */
-	public function onData($data, $user) {	
+	public function onData($data, $client) {
+		$jsonMsg = $data->getPayload();
+		$arrMsg  = json_decode($jsonMsg, true);
+		
+		// log msg
+		$this->say($jsonMsg);
+		
+		// Set additional informations
+		$arrMsg['client'] = $client;
+		
+		// Check whether task is set
+		if(!isset($arrMsg["T"])) {
+			return;
+		}
+		
+		// route the task
+		$this->_routeman->perform($arrMsg);
 
 	}
 	

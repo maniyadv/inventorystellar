@@ -10,7 +10,7 @@ require_once __DIR__ . '/base/core.ws.php';
 
 
 // Initializing the Wrench server
-$server = new \Wrench\Server('ws://'.WS_HOST_NAME.':9669/', array(
+$server = new \Wrench\Server('ws://'.WS_HOST_NAME.':9660/', array(
     'allowed_origins'            => array(
         'usrhash.com'
    ),		

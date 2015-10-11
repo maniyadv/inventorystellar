@@ -92,7 +92,8 @@ class Server extends Configurable
 
         parent::__construct($options);
 
-        $this->log('Server initialized', 'info');
+        $this->log('Server ready', 'info');
+        $this->log('Server started at '.$uri, 'info');
     }
 
     /**
