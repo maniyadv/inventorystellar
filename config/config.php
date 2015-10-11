@@ -11,3 +11,8 @@ if (!defined('DS'))                 {
 if (!defined('APP_ROOT'))           {
 	define('APP_ROOT', dirname(dirname(__FILE__)));
 }
+// define host url
+if (!defined('HOST_NAME'))           {
+	define('HOST_NAME', '192.168.1.9');
+}
+
