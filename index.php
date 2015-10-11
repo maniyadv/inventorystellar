@@ -42,14 +42,19 @@
     	<div class='section'>
     	    <div class='container'>
     	    	<div class='row'>
+    	    		<div class="pagetitle"> Availabilty System </div>
+
+    	    		<span class='totalroomdiv'>Current Availability: </span>
+    	    		<span class='totalrooms'><?php echo ' '; ?> </span>
+    	    	</div>
+
+    	    	<div class='row' style="margin-top:30px;">
 
 				<form class='navbar-form' >
 
-					<h2>Booking</h2>
-
 					<!-- Booking Intensity -->
 					<div class='form-group'>
-						<?php echo 'Booking Intensity'; ?> </br> 
+						<?php echo 'Bot Booking Intensity'; ?> </br> 
 						<select class='form-control' name='intensity' id='intensity'>
 							<option value='slow'>Slow</option>
 							<option value='medium'>Medium</option>
@@ -62,7 +67,7 @@
 					<div class='currentinfo' style='display:none'>
 						<div class='form-group'>
 							<div class='currentdate'><?php echo ' '; ?> </div>
-							<div class='totalrooms'><?php echo ' '; ?> </div>
+							<?php echo 'Current Status'; ?>
 							<div class='input-group' id='availability'></div>
 						</div>
 						</br> </br>

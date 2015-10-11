@@ -20,12 +20,6 @@ $('#search').click(function() {
 	processAvailabilitySearch();
 });
 
-// Book button click handling 
-$('#book').click(function() {
-
-	processBooking();
-});
-
 // Processes form fields 
 function processFields() {
     // Intensity field 
@@ -56,26 +50,29 @@ function processFields() {
 }
 
 // Processes booking request 
-function processBooking() {
+function processBooking(id) {
 	var result = validateInput();
 
 	if (result['status'] == 'Y') {
-    	var data = [];
-    	data['checkin'] =  $('input[name=checkin]').val();
-    	data['checkout'] =  $('input[name=checkout]').val();
-    	data['rooms'] =  $('input[name=rooms]').val();
+    	var data = new Object();
+    	data.checkin =  $('input[name=checkin]').val();
+    	data.checkout =  $('input[name=checkout]').val();
+    	data.rooms =  $('input[name=rooms]').val();
+
+    	// TODO: Remove useless string in front of id - Unique 
+    	data.hotelid = id.substring(5);
+    	console.log(data);
 
     	var infoStr = '';
-    	infoStr = 'BOOKING DETAILS' + ' </br> ' + 
-        		  'Intensity: '+ data['intensity'] + ' </br> ' + 
-    			  'Check-in: '+ data['checkin'] + ' </br> ' + 
-    			  'Check-out: '+ data['checkout'] + ' </br> ' + 
-    			  'Rooms: '+ data['rooms'];
-    	toastr.info(infoStr);
+    	infoStr = 'BOOKING DETAILS : ' + ' </br> ' + 
+    			  'Check-in: '+ data.checkin + ' </br> ' + 
+    			  'Check-out: '+ data.checkout + ' </br> ' + 
+    			  'Rooms: '+ data.rooms;
+    	displayInfoToast(infoStr);
 
     	sendBookingRequest(data);
 	} else {
-		toastr.warning(result['error']);
+		displayWarnToast(result['error']);
 	}
 }
 
@@ -90,15 +87,15 @@ function processAvailabilitySearch() {
     	data.rooms =  $('input[name=rooms]').val();
 
     	var infoStr = '';
-    	infoStr = 'BOOKING DETAILS : ' + ' </br> ' + 
+    	infoStr = 'SEARCH DETAILS : ' + ' </br> ' + 
     			  'Check-in: '+ data.checkin + ' </br> ' + 
     			  'Check-out: '+ data.checkout + ' </br> ' + 
     			  'Rooms: '+ data.rooms;
-    	toastr.info(infoStr);
+    	displayInfoToast(infoStr);
 
     	sendSearchRequest(data);
 	} else {
-		toastr.warning(result['error']);
+		displayWarnToast(result['error']);
 	}
 }
 
@@ -122,19 +119,33 @@ function validateInput() {
 	return result;
 }
 
+// Sends auto search request to websocket 
+function sendAutoSearchRequest() {
+	var data = new Object();
+	data.t = "search";
+	data.type = "auto";
+	data.cd = currDate;
+	data.checkin = currDate;
+	data.checkout = currDate;
+	data.rooms = ''+DEFAULT_ROOMS;
+	createandSendMessage(data);
+}
+
 // Sends search request to websocket 
 function sendSearchRequest(data) {
-	toastr.success('Search' + DEFAULT_IN_PROCESS);
+	displayInfoToast('Search' + DEFAULT_IN_PROCESS);
 	data.t = "search";
-	data.type= "manual";
+	data.type = "manual";
+	data.cd = currDate;
 	createandSendMessage(data);
 	roomCount = $('input[name=rooms]').val();
 }
 
 //Sends request to websocket 
 function sendBookingRequest(data) {
-	toastr.success('Booking' + DEFAULT_IN_PROCESS);
+	displayInfoToast('Booking' + DEFAULT_IN_PROCESS);
 	data.t = "book";
+	data.cd = currDate;
 	createandSendMessage(data);
 	roomCount = $('input[name=rooms]').val();
 }

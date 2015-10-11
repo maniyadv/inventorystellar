@@ -34,11 +34,7 @@ function init() {
 			log('Welcome - status ' + this.readyState);
 			log('Connected to - ' + host);
 			document.getElementById('status').style.backgroundColor = '#acdfb5';
-
-			var dataObj = new Object();
-			dataObj.t = "search";
-			dataObj.type= "auto";
-			createandSendMessage(dataObj);
+			sendAutoSearchRequest();
 		};
 
 		socket.onmessage = function(msg) {
@@ -173,21 +169,39 @@ function routeMessage(msg) {
 					updateAvailability(data);
 					break;
 
+				case "book":
+					postBooking(data);
+					break;
+
 				default:
 					break;
 			}
 		}
 
 		if (msgData['m']) {
-			toastr.info(msgData['m']);
+			displayInfoToast(msgData['m'])
 		}
 	}
 }
 
-//Update availability data 
+// Display info Toast 
+function displayInfoToast(msg) {
+	toastr.clear();
+	toastr.info(msg);
+}
+
+//Display warning Toast 
+function displayWarnToast(msg) {
+	toastr.clear();
+	toastr.warning(msg);
+}
+
+// Update availability data 
 function updateAvailability(data) {
 	for(var key in data) {
-		$(".avail"+data[key].id).html(data[key].info[currDate]);
+		if (data[key].info[currDate]) {
+			$(".avail"+data[key].id).html(data[key].info[currDate]);
+		}
 	}
 }
 
@@ -200,13 +214,15 @@ function autoSearch(data) {
 	$('#availability').html('<div class="hotel_list"></div><div class="availability_list"></div>');
 
 	for(var key in data) {
-		roomCount = parseInt(roomCount) + parseInt(data[key].info[currDate]);
-		$('.hotel_list').append('<span class="autorow mselect'+data[key].id+'">'+data[key].name+'</span>');
-		$('.availability_list').append('<span class="autorow mavail'+data[key].id+'">'+data[key].info[currDate]+'</span>');
+		if (data[key].info[currDate]) {
+			roomCount = parseInt(roomCount) + parseInt(data[key].info[currDate]);
+			$('.hotel_list').append('<span class="autorow mselect'+data[key].id+'">'+data[key].name+'</span>');
+			$('.availability_list').append('<span class="autorow mavail'+data[key].id+'">'+data[key].info[currDate]+'</span>');
+		}
 	}
 
 //	$('.currentdate').html('Date: ' +currDate);
-	$('.totalrooms').html('Current availability: ' +roomCount);
+	$('.totalrooms').html(roomCount);
 }
 
 // Parse manual search data 
@@ -228,22 +244,31 @@ function manualSearch(data) {
 			}
 		}
 
-		$('#listing .'+data[key].id).append('<div class="brow form-group"><div class="input-group" id="search"'+data[key].id+'><input type="button" id="book'+data[key].id+'" class="btn btn-primary" name="search" value="Book"></div></div>');
+		$('#listing .'+data[key].id).append('<div class="brow form-group"><div class="input-group" id="search'+data[key].id+'"><input type="button" id="book-'+data[key].id+'" class="btn btn-primary" onClick="processBooking(this.id)" name="search" value="Book"></div></div>');
 		if (UA) {
-			disableBooking('book'+data[key].id);
+			disableBooking('book-'+data[key].id);
 		}
 	}
 
 	checkAvailability();
 }
 
+//Check room availability 
+function checkAvailability() {
+	$('.searchinfo').show();
+}
+
 // Disable booking on some ids 
 function disableBooking(id) {
-	console.log(id);
     $("#"+id).prop("disabled",true);
 }
 
-// Check room availability 
-function checkAvailability() {
+// Post booking 
+function postBooking(data) {
+	$('.searchinfo').hide();
+	$('#listing').html('');
+	$('#listing').html('Booking Successful!');
 	$('.searchinfo').show();
+
+	sendAutoSearchRequest();
 }
