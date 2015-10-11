@@ -23,7 +23,8 @@ class RouteManager {
 	public function route($param) {
 		switch ($param["t"]) {
 			case "search"  : $this->search($param);  break;
-			case "book"    : $this->book($param);  break;			
+			case "book"    : $this->book($param);  break;
+			case "reset"    : $this->reset($param);  break;
 		}
 	}
 	
@@ -43,5 +44,12 @@ class RouteManager {
 		$this->_core->book($param);		
 	}
 	
+	/**
+	 * Reset all booking and config data
+	 * @param unknown_type $param
+	 */
+	public function reset($param) {
+		$this->_core->reset($param);
+	}
 	
 }

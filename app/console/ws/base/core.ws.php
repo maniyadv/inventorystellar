@@ -24,6 +24,17 @@ class Core {
 	}
 	
 	/**
+	 * Method to reset all config and booking values
+	 * @param unknown_type $param
+	 */
+	function reset($param) {
+		$this->_bookings   = array();
+		$this->_coreconfig = array();
+		
+		$this->loadConfig();
+	}
+	
+	/**
 	 * Method to load initial config
 	 */
 	function loadConfig() {
