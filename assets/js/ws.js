@@ -39,10 +39,7 @@ function init() {
 			var dataObj = new Object();
 			dataObj.t = "search";
 			dataObj.type= "auto";
-			var msg = createMessage(dataObj);
-			log(msg);
-
-			socket.send(msg);
+			var msg = createandSendMessage(dataObj);
 		};
 
 		socket.onmessage = function(msg) {
@@ -131,8 +128,8 @@ function onKey(event) {
 }
 */
 
-// Array to json string 
-function createMessage(dataSet) {
+// Array to json string and send message 
+function createandSendMessage(dataSet) {
 	/*
 	 * For extra arguments 
 	 *
@@ -148,6 +145,7 @@ function createMessage(dataSet) {
 	*/
 
 	var result = JSON.stringify(dataSet);
+	socket.send(result);
 	return result;
 }
 
@@ -156,50 +154,96 @@ function routeMessage(msg) {
 
 	if (msg.data) {
 		var data = msg.data;
-		msgData = JSON.parse(data);
+		var msgData = JSON.parse(data);
 
 		if (msgData['s'] == "1") {
 			data = msgData['d'];
 
 			switch(msgData['t']) {
 				case "search":
-					parseResponse(data);
+					autoSearch(data);
+					$('.bookinfo').show();
 					break;
 
 				case "update":
-					updateData(data);
+					updateAvailability(data);
 					break;
 
 				default:
 					break;
 			}
+		}
 
-			if (msgData['m']) {
-				toastr.info(msgData['m']);
-			}
+		if (msgData['m']) {
+			toastr.info(msgData['m']);
 		}
 	}
 }
 
-// Parse data 
-function parseResponse(data) {
-
-	$('#availability').html('');
-	$('#availability').append('<div class="dateavail">Date: '+currDate+'</div>');
-
+//Update availability data 
+function updateAvailability(data) {
 	for(var key in data) {
-		$('#availability').append('<div class="'+data[key].id+'">');
-		$('#availability').append('<span class="hotelname">'+data[key].name+'</span>'+' : ');
-		$('#availability').append('<span class="hotelavail">'+data[key].info[currDate]+'</span>');
-		//$('#availability').append('<div class="dateavail">'+currDate+'</div>');
-		$('#availability').append('</div>');
+		$(".avail"+data[key].id).html(data[key].info[currDate]);
 	}
 }
 
-// Update data 
-function updateData(data) {
+// Parse auto search data - old 
+function oldAutoSearch(data) {
 
+	$('#availability').html('');
+
+	$('#availability').append('<thead><tr class="list_table">');
 	for(var key in data) {
-//		$('#'+data[key].id.hotelavail).html(data[key].info[currDate]);
+		$('.list_table').append('<th class="select'+data[key].id+'">'+data[key].name+'</th>');
+		//$('#availability').append('<div class="dateavail">'+currDate+'</div>');
 	}
+	$('.list_table').append('</tr></thead>');
+
+	$('#availability').append('<tbody><tr class="availability_table">');
+	for(var key in data) {
+		$('.availability_table').append('<td class="avail'+data[key].id+'">'+data[key].info[currDate]+'</td>');
+	}
+	$('.availability_table').append('</tr></tbody>');
+
+}
+
+// Parse auto search data 
+function autoSearch(data) {
+	var roomCount = 0;
+	$('.totalrooms').html('');
+	
+	$('#availability').html('');
+
+	$('#availability').append('<div class="hotel_list">');
+	for(var key in data) {
+		$('.hotel_list').append('<span class="autorow mselect'+data[key].id+'">'+data[key].name+'</span>');
+	}
+	$('.hotel_list').append('</div>');
+
+	$('#availability').append('<div class="availability_list">');
+	for(var key in data) {
+		roomCount = parseInt(roomCount) + parseInt(data[key].info[currDate]);
+		$('.availability_list').append('<span class="autorow mavail'+data[key].id+'">'+data[key].info[currDate]+'</span>');
+	}
+	$('.availability_list').append('</div>');
+
+	$('.totalrooms').html('Total Rooms Available: ' +roomCount);
+}
+
+// Parse manual search data 
+function manualSearch(data) {
+
+	$('#listing').html('');
+
+	$('#listing').append('<div class="hotel_list">');
+	for(var key in data) {
+		$('.hotel_list').append('<span class="mrow mselect'+data[key].id+'">'+data[key].name+'</span>');
+	}
+	$('.hotel_list').append('</div>');
+
+	$('#listing').append('<div class="availability_list">');
+	for(var key in data) {
+		$('.availability_list').append('<span class="mrow mavail'+data[key].id+'">'+data[key].info[currDate]+'</span>');
+	}
+	$('.availability_list').append('</div>');
 }
