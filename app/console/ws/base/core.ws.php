@@ -211,6 +211,13 @@ class Core {
 				if($currentavail >= $roomsreq) {
 					$canbebooked["s"] = true;
 					$booking[$key][$date]["rooms"] = $roomsreq;
+					
+					if($booking != 0) {
+						$this->_bookings[$key][$date]["rooms"] += $roomsreq;
+					} else {
+						$this->_bookings = $booking;
+					}
+					
 				} else {
 					$canbebooked["s"] = false;
 					$canbebooked["d"] = $roomsreq - $currentavail;
@@ -220,11 +227,10 @@ class Core {
 		
 		
 		// Now book the room
-		if ($canbebooked["s"]) {
-			$this->_bookings = $booking;
-			$response['s'] = "1";
-			$response["t"] = $param["t"];
-			$response['m'] = "Successfully booked required rooms";
+		if ($canbebooked["s"]) {			
+			$response['s']   = "1";
+			$response["t"]   = $param["t"];
+			$response['m']   = "Successfully booked required rooms";
 			$response["bookings"] = $booking;
 			$param['client']->send(json_encode($response));
 			
