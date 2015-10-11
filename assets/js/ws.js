@@ -166,7 +166,6 @@ function routeMessage(msg) {
 						$('.bookinfo').show();
 					} else {
 						manualSearch(data);
-						$('.searchinfo').show();
 					}
 					break;
 
@@ -212,6 +211,7 @@ function autoSearch(data) {
 
 // Parse manual search data 
 function manualSearch(data) {
+	var UA = false;
 	$('#listing').html('');
 
 	for(var key in data) {
@@ -219,16 +219,31 @@ function manualSearch(data) {
 		$('#listing .'+data[key].id).append('<span class="mrow mselect'+data[key].id+'">'+data[key].name+'</span>');
 
 		for(var keys in data[key].info) {
-			$('#listing .'+data[key].id).append('<span class="mrow mavail'+data[key].id+'">'+data[key].info[keys]+'</span>');
+			if (parseInt(data[key].info[keys]) < parseInt(roomCount)) {
+				UA = true;
+				$('#listing .'+data[key].id).append('<span class="mrow mavail'+data[key].id+'" style="background-color:#ecc8c8">UA</span>');
+			} else {
+				UA = false;
+				$('#listing .'+data[key].id).append('<span class="mrow mavail'+data[key].id+'" style="background-color:#acdfb5">A</span>');
+			}
 		}
 
-		$('#listing .'+data[key].id).append('<div class="brow form-group"><div class="input-group" id="search"'+data[key].id+'><input type="button" class="btn btn-primary" name="search" value="Book"></div></div>');
+		$('#listing .'+data[key].id).append('<div class="brow form-group"><div class="input-group" id="search"'+data[key].id+'><input type="button" id="book'+data[key].id+'" class="btn btn-primary" name="search" value="Book"></div></div>');
+		if (UA) {
+			disableBooking('book'+data[key].id);
+		}
 	}
 
 	checkAvailability();
 }
 
+// Disable booking on some ids 
+function disableBooking(id) {
+	console.log(id);
+    $("#"+id).prop("disabled",true);
+}
+
 // Check room availability 
 function checkAvailability() {
-	
+	$('.searchinfo').show();
 }

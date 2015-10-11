@@ -4,7 +4,7 @@ var DEFAULT_IN_PROCESS = ' in process!';
 var DEFAULT_BOOKING_DAYS = 0;
 var cDate = new Date();
 var currDate = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + cDate.getDate();
-	
+var roomCount = 0;
 
 // Websocket Global object variable
 var socket = null;
@@ -23,7 +23,7 @@ $('#search').click(function() {
 // Book button click handling 
 $('#book').click(function() {
 
-//	processBooking();
+	processBooking();
 });
 
 // Processes form fields 
@@ -61,7 +61,6 @@ function processBooking() {
 
 	if (result['status'] == 'Y') {
     	var data = [];
-    	data['intensity'] =  $('#intensity').val();
     	data['checkin'] =  $('input[name=checkin]').val();
     	data['checkout'] =  $('input[name=checkout]').val();
     	data['rooms'] =  $('input[name=rooms]').val();
@@ -74,7 +73,7 @@ function processBooking() {
     			  'Rooms: '+ data['rooms'];
     	toastr.info(infoStr);
 
-    	sendRequest(data);
+    	sendBookingRequest(data);
 	} else {
 		toastr.warning(result['error']);
 	}
@@ -97,7 +96,7 @@ function processAvailabilitySearch() {
     			  'Rooms: '+ data.rooms;
     	toastr.info(infoStr);
 
-    	sendRequest(data);
+    	sendSearchRequest(data);
 	} else {
 		toastr.warning(result['error']);
 	}
@@ -123,10 +122,19 @@ function validateInput() {
 	return result;
 }
 
-// Sends request to websocket 
-function sendRequest(data) {
+// Sends search request to websocket 
+function sendSearchRequest(data) {
 	toastr.success('Search' + DEFAULT_IN_PROCESS);
 	data.t = "search";
 	data.type= "manual";
 	createandSendMessage(data);
+	roomCount = $('input[name=rooms]').val();
+}
+
+//Sends request to websocket 
+function sendBookingRequest(data) {
+	toastr.success('Booking' + DEFAULT_IN_PROCESS);
+	data.t = "book";
+	createandSendMessage(data);
+	roomCount = $('input[name=rooms]').val();
 }
