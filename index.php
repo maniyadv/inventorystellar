@@ -44,6 +44,14 @@
 					</div>
 					</br> </br> 
 
+					<!-- Hotel Info -->
+					<div class='form-group'>
+						<?php echo 'Today'; ?>
+						<div class='totalrooms'><?php echo ' '; ?> </div>
+						<div class='input-group' id='availability'></div>
+					</div>
+					</br> </br> 
+
 					<!-- Email -->
 					<div class='form-group'>
 						<div class='input-group' id='email'>
@@ -53,23 +61,8 @@
 					</div>
 					</br> </br> 
 
-					<!-- Hotel Info -->
-					<div class='form-group'>
-						<div class='input-group' id='availability'>
-						</div>
-					</div>
-					</br> </br> 
-
 					<!-- Booking Info -->
-					<div class='bookinfo' style='display:block' >
-
-						<!-- Hotel Info -->
-						<div class='form-group'>
-							<div class='input-group' id='checkin'>
-								<?php echo 'Name: '; ?> </br> 
-								<div id='hotelinfo'>Hotel Name</div>
-							</div>
-						</div>
+					<div class='bookinfo' style='display:none'>
 
 						<!-- Check-in Date -->
 						<div class='form-group'>
@@ -94,12 +87,12 @@
 								<input type='text' class='form-control' name='rooms' placeholder='<?php echo '1'; ?>' >
 							</div> 
 						</div>
-	
-						<!-- Book Button -->
+
+						<!-- Check Button -->
 						<div class='form-group'>
-							<div class='input-group' id='book'>
+							<div class='input-group' id='check'>
 								<?php echo '&nbsp'; ?> </br> 
-								<input type='button' class='btn btn-primary' name='book' value='Book' > 
+								<input type='button' class='btn btn-primary' name='check' value='Check' > 
 							</div>
 						</div>
 					</div>

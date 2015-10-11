@@ -14,10 +14,16 @@ $(document).ready(function () {
     processFields();
 });
 
+//Book button click handling 
+$('#check').click(function() {
+
+	processAvailabilityCheck();
+});
+
 // Book button click handling 
 $('#book').click(function() {
 
-	processBooking();
+//	processBooking();
 });
 
 // Processes form fields 
@@ -74,6 +80,31 @@ function processBooking() {
 	}
 }
 
+//Processes check request 
+function processAvailabilityCheck() {
+	var result = validateInput();
+
+	if (result['status'] == 'Y') {
+    	var data = [];
+    	data['intensity'] =  $('#intensity').val();
+    	data['checkin'] =  $('input[name=checkin]').val();
+    	data['checkout'] =  $('input[name=checkout]').val();
+    	data['rooms'] =  $('input[name=rooms]').val();
+
+    	var infoStr = '';
+    	infoStr = 'BOOKING DETAILS' + ' </br> ' + 
+        		  'Intensity: '+ data['intensity'] + ' </br> ' + 
+    			  'Check-in: '+ data['checkin'] + ' </br> ' + 
+    			  'Check-out: '+ data['checkout'] + ' </br> ' + 
+    			  'Rooms: '+ data['rooms'];
+    	toastr.info(infoStr);
+
+    	sendRequest(data);
+	} else {
+		toastr.warning(result['error']);
+	}
+}
+
 // Validates input data on all fields - Default data processing 
 function validateInput() {
 	var result = [];
@@ -98,4 +129,5 @@ function validateInput() {
 function sendRequest(data) {
 	toastr.success(DEFAULT_IN_PROCESS);
 	console.log(data);
+	createandSendMessage(data);
 }

@@ -9,3 +9,17 @@
 	position: absolute;
 	background-color: #ecc8c8;
 }
+
+.mrow {
+	float: right;
+    padding: 5px;
+    width: 75px;
+    border: 1px solid #cccccc;
+}
+
+.autorow {
+	float: right;
+    padding: 5px;
+    width: 75px;
+    border: 1px solid #cccccc;
+}
