@@ -56,6 +56,7 @@ class HookerApp extends Application {
 		
 		// Set additional informations
 		$arrMsg['client'] = $client;
+		$arrMsg['clients'] = $this->_clients;
 		
 		// Check whether task is set
 		if(!isset($arrMsg["t"])) {

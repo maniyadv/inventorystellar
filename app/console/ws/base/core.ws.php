@@ -62,23 +62,24 @@ class Core {
 		$response = array();
 		
 		if($param["type"] == "auto") {
+			$param["checkin"] = $param["cd"];
+			$param["checkout"]= $param["cd"];
+			
 			$response["s"]    = "1";
 			$response["t"]    = $param["t"];
 			$response["m"]    = "Loaded initial data";
-			$response["d"]    = $this->_coreconfig;
+			$response["d"]    = $this->findAvailableHotels($param);
 			$response["type"] = $param["type"];
 			$param["client"]->send(json_encode($response));			
 		}
 		
 		 if ($param["type"] == "manual") {
 						
-			$hotels 		  = $this->findAvailableHotels($param);
-						
 			$response["s"]    = "1";
 			$response["t"]    = $param["t"];
 			$response["type"] = $param["type"];	
 			$response["m"]    = "Search Finished";
-			$response["d"]    = $hotels;
+			$response["d"]    = $this->findAvailableHotels($param);
 			$param["client"]->send(json_encode($response));
 		} 
 
@@ -133,10 +134,10 @@ class Core {
 				$baseavail = $availarr[0];
 				
 				if (isset($this->_bookings) && !empty($this->_bookings)) {
-					if (isset($this->_bookings[$val])) {
-						if (isset($this->_bookings[$val][$date])) {
-							if (isset($this->_bookings[$val][$date]["rooms"])) {
-								$booked = $this->_bookings[$val][$date]["rooms"];
+					if (isset($this->_bookings[$key])) {
+						if (isset($this->_bookings[$key][$date])) {
+							if (isset($this->_bookings[$key][$date]["rooms"])) {
+								$booked = $this->_bookings[$key][$date]["rooms"];
 							}					
 						}
 					}
@@ -219,7 +220,7 @@ class Core {
 		
 		
 		// Now book the room
-		if ($canbebooked) {
+		if ($canbebooked["s"]) {
 			$this->_bookings = $booking;
 			$response['s'] = "1";
 			$response["t"] = $param["t"];
@@ -235,7 +236,21 @@ class Core {
 			$param['client']->send(json_encode($response));
 		}
 		
-		
+		$this->updateAllClients($param);
+	}
+	
+	
+	/**
+	 * Update all clients about booking if it affects
+	 * @param unknown_type $param
+	 */
+	function updateAllClients($param) {
+		foreach ($param["clients"] as $key => $client) {
+			$param["t"] = "search";
+			$param["type"] = "auto";
+			$param["client"] = $client;			
+			$this->search($param);			
+		}
 	}
 	
 	
