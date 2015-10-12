@@ -221,7 +221,8 @@ function updateAvailability(data) {
 
 // Parse auto search data 
 function autoSearch(data) {
-	var roomCount = 0;
+	oldRoomCount = 0;
+	newRoomCount = 0;
 	$('.totalrooms').html('');
 
 	/*
@@ -258,41 +259,38 @@ function autoSearch(data) {
 
 	var invntDates = [];
 	for(var key in data) {
-		$('#availability').append('<div class="row invntbody '+data[key].id+'">');
-		$('#availability .'+data[key].id).append('<span class="idata idataHotel mselect'+data[key].id+'">'+data[key].name+'</span>');
+		$('#availability').append('<div class="row invntbody invnt'+data[key].id+'">');
+		$('#availability .invnt'+data[key].id).append('<span class="idata idataHotel mselect'+data[key].id+'">'+data[key].name+'</span>');
 
 		localData[data[key].id] = [];
 
 		for(var keys in data[key].info) {
 			invntDates[keys] = [keys];
-			roomCount = parseInt(roomCount) + parseInt(data[key].info[keys]);
+			newRoomCount = parseInt(newRoomCount) + parseInt(data[key].info[keys]);
 
-			var start = 0, end = 0;
+			var start = '0', end = '0';
 			if (localData[data[key].id] && localData[data[key].id][keys]) {
 				start = localData[data[key].id][keys];
 			}
 
-			if (data[key].info[keys]) {
-				end = data[key].info[keys];
-			}
+			end = data[key].info[keys];
 
+			$('.invnt'+data[key].id+' .mavail-'+keys).removeClass('green red');
 			if (localData && localData[data[key].id] && localData[data[key].id][keys] && localData[data[key].id][keys] != data[key].info[keys]) {
-				console.log("1");
-				$('#availability .'+data[key].id).append('<span class="idata mavail'+data[key].id+'" style="background-color:#acdfb5">'+data[key].info[keys]+'</span>');
-				rollNumbers(start, end, 'mavail'+data[key].id);
+				$('#availability .invnt'+data[key].id).append('<span class="idata mavail-'+keys+'" style="background-color:#acdfb5">0</span>');
+				rollNumbers(start, end, '.invnt'+data[key].id+' .mavail-'+keys);
+				$('.invnt'+data[key].id+' .mavail-'+keys).addClass('green');
 			} else if (data[key].info[keys] < 1) {
-				console.log("2");
-				$('#availability .'+data[key].id).append('<span class="idata mavail'+data[key].id+'" style="background-color:#ecc8c8">'+data[key].info[keys]+'</span>');
-				rollNumbers(start, end, 'mavail'+data[key].id);
+				$('#availability .invnt'+data[key].id).append('<span class="idata mavail-'+keys+'" style="background-color:#ecc8c8">0</span>');
+				rollNumbers(start, end, '.invnt'+data[key].id+' .mavail-'+keys);
+				$('.invnt'+data[key].id+' .mavail-'+keys).addClass('red');
 			} else {
-				console.log("3");
-				$('#availability .'+data[key].id).append('<span class="idata mavail'+data[key].id+'" >'+data[key].info[keys]+'</span>');
-				rollNumbers(start, end, 'mavail'+data[key].id);
+				$('#availability .invnt'+data[key].id).append('<span class="idata mavail-'+keys+'" >'+data[key].info[keys]+'</span>');
 			}
 
+			localData[data[key].id] = data[key].info;
 			localData[data[key].id][keys] = data[key].info[keys];
 			hotelData[data[key].id] = data[key].name;
-			console.log(localData[data[key].id][keys]);
 		}
 	}
 
@@ -300,13 +298,14 @@ function autoSearch(data) {
 		$('#availability .invnthead').append('<span class="ihead">'+date+'</span>');
 	}
 
-//	$('.currentdate').html('Date: ' +currDate);
-	$('.totalrooms').html(roomCount);
+	//$('.currentdate').html('Date: ' +currDate);
+	//rollNumbers(oldRoomCount, newRoomCount, '.totalrooms');
+	$('.totalrooms').html(newRoomCount);
+	oldRoomCount = newRoomCount;
 }
 
 // Parse manual search data 
 function manualSearch(data) {
-	var UA = false;
 	$('#listing').html('');
 
 	$('#listing').append('<div class="listhead">');
@@ -314,6 +313,7 @@ function manualSearch(data) {
 
 	var listDates = [];
 	for(var key in data) {
+		var UA = false;
 		$('#listing').append('<div class="'+data[key].id+'">');
 		$('#listing .'+data[key].id).append('<span class="mrow ldataHotel mselect'+data[key].id+'">'+data[key].name+'</span>');
 
@@ -323,7 +323,6 @@ function manualSearch(data) {
 				UA = true;
 				$('#listing .'+data[key].id).append('<span class="mrow mavail'+data[key].id+'" style="background-color:#ecc8c8">UA</span>');
 			} else {
-				UA = false;
 				$('#listing .'+data[key].id).append('<span class="mrow mavail'+data[key].id+'" style="background-color:#acdfb5">A</span>');
 			}
 		}

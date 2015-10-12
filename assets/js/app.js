@@ -6,7 +6,9 @@ var DEFAULT_INV_MAX_DAYS = 6;
 var cDate = new Date();
 var currDate = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + cDate.getDate();
 var invMaxDate = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + (cDate.getDate()+DEFAULT_INV_MAX_DAYS);
-var roomCount = 0;
+var roomCount;
+var oldRoomCount = 0;
+var newRoomCount = 0;
 var botIntensity = 20000;
 var botInterval;
 
@@ -199,4 +201,6 @@ function sendResetRequest() {
 	data.checkin = currDate;
 	data.checkout = invMaxDate;
 	createandSendMessage(data);
+	oldRoomCount = 0;
+	newRoomCount = 0;
 }
