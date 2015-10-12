@@ -32,6 +32,11 @@ class Core {
 		$this->_coreconfig = array();
 		
 		$this->loadConfig();
+		
+		$param["type"] = "auto";
+		$param["t"]    = "search";
+		$param["rooms"] = "1";
+		$this->search($param);
 	}
 	
 	/**
@@ -62,8 +67,8 @@ class Core {
 		$response = array();
 		
 		if($param["type"] == "auto") {
-			$param["checkin"] = $param["cd"];
-			$param["checkout"]= $param["cd"];
+			$param["checkin"] = $param["checkin"];
+			$param["checkout"]= $param["checkout"];
 			
 			$response["s"]    = "1";
 			$response["t"]    = $param["t"];
@@ -263,7 +268,9 @@ class Core {
 		foreach ($param["clients"] as $key => $client) {
 			$param["t"] = "search";
 			$param["type"] = "auto";
-			$param["client"] = $client;			
+			$param["client"] = $client;
+			$param["checkin"] = $param["ccheckin"];
+			$param["checkout"] = $param["ccheckout"];						
 			$this->search($param);			
 		}
 	}
