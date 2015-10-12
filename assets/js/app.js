@@ -18,11 +18,33 @@ $(document).ready(function () {
     processFields();
 });
 
-//Book button click handling 
+// Book button click handling 
 $('#search').click(function() {
 
 	processAvailabilitySearch();
 });
+
+// Reset button click handling 
+$('#reset').click(function() {
+
+	sendResetRequest();
+});
+
+// Roll numbers 
+function rollNumbers(start, end, id) {
+	$(id).html('');
+
+	var beginRolling = function() {
+	    $(id).html(start);
+
+	    if (start != end) {
+	    	setTimeout(beginRolling, 10);
+	    }
+	    start++;
+	};
+
+	beginRolling();
+}
 
 // Processes form fields 
 function processFields() {
@@ -150,7 +172,7 @@ function sendAutoSearchRequest() {
 	createandSendMessage(data);
 }
 
-// Sends search request to websocket 
+// Sends manual search request to websocket 
 function sendSearchRequest(data) {
 	displayInfoToast('Search' + DEFAULT_IN_PROCESS);
 	data.t = "search";
@@ -160,11 +182,21 @@ function sendSearchRequest(data) {
 	roomCount = $('input[name=rooms]').val();
 }
 
-//Sends request to websocket 
+// Sends booking request to websocket 
 function sendBookingRequest(data) {
 	displayInfoToast('Booking' + DEFAULT_IN_PROCESS);
 	data.t = "book";
-	data.cd = currDate;
+	data.ccheckin = currDate;
+	data.ccheckout = invMaxDate;
 	createandSendMessage(data);
 	roomCount = $('input[name=rooms]').val();
+}
+
+// Sends reset request to websocket 
+function sendResetRequest() {
+	var data = new Object();
+	data.t = "reset";
+	data.checkin = currDate;
+	data.checkout = invMaxDate;
+	createandSendMessage(data);
 }

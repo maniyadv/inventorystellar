@@ -261,17 +261,38 @@ function autoSearch(data) {
 		$('#availability').append('<div class="row invntbody '+data[key].id+'">');
 		$('#availability .'+data[key].id).append('<span class="idata idataHotel mselect'+data[key].id+'">'+data[key].name+'</span>');
 
+		localData[data[key].id] = [];
+
 		for(var keys in data[key].info) {
 			invntDates[keys] = [keys];
 			roomCount = parseInt(roomCount) + parseInt(data[key].info[keys]);
 
-			if (localData && localData[data[key].id] && localData[data[key].id] != data[key].info[currDate]) {
-				$('#availability .'+data[key].id).append('<span class="idata mavail'+data[key].id+'" style="background-color:#acdfb5">'+data[key].info[keys]+'</span>');
-			} else if (data[key].info[currDate] < 1) {
-				$('#availability .'+data[key].id).append('<span class="idata mavail'+data[key].id+'" style="background-color:#ecc8c8">'+data[key].info[keys]+'</span>');
-			} else {
-				$('#availability .'+data[key].id).append('<span class="idata mavail'+data[key].id+'" >'+data[key].info[keys]+'</span>');
+			var start = 0, end = 0;
+			if (localData[data[key].id] && localData[data[key].id][keys]) {
+				start = localData[data[key].id][keys];
 			}
+
+			if (data[key].info[keys]) {
+				end = data[key].info[keys];
+			}
+
+			if (localData && localData[data[key].id] && localData[data[key].id][keys] && localData[data[key].id][keys] != data[key].info[keys]) {
+				console.log("1");
+				$('#availability .'+data[key].id).append('<span class="idata mavail'+data[key].id+'" style="background-color:#acdfb5">'+data[key].info[keys]+'</span>');
+				rollNumbers(start, end, 'mavail'+data[key].id);
+			} else if (data[key].info[keys] < 1) {
+				console.log("2");
+				$('#availability .'+data[key].id).append('<span class="idata mavail'+data[key].id+'" style="background-color:#ecc8c8">'+data[key].info[keys]+'</span>');
+				rollNumbers(start, end, 'mavail'+data[key].id);
+			} else {
+				console.log("3");
+				$('#availability .'+data[key].id).append('<span class="idata mavail'+data[key].id+'" >'+data[key].info[keys]+'</span>');
+				rollNumbers(start, end, 'mavail'+data[key].id);
+			}
+
+			localData[data[key].id][keys] = data[key].info[keys];
+			hotelData[data[key].id] = data[key].name;
+			console.log(localData[data[key].id][keys]);
 		}
 	}
 
@@ -288,12 +309,12 @@ function manualSearch(data) {
 	var UA = false;
 	$('#listing').html('');
 
-	$('#listing').append('<div class="row listhead">');
+	$('#listing').append('<div class="listhead">');
 	$('#listing .listhead').append('<span class="lhead">#</span>');
 
 	var listDates = [];
 	for(var key in data) {
-		$('#listing').append('<div class="row '+data[key].id+'">');
+		$('#listing').append('<div class="'+data[key].id+'">');
 		$('#listing .'+data[key].id).append('<span class="mrow ldataHotel mselect'+data[key].id+'">'+data[key].name+'</span>');
 
 		for(var keys in data[key].info) {
@@ -341,14 +362,24 @@ function postBooking(data) {
 // Bot booking 
 function botBooking() {
 	var data = new Object();
-	data.checkin = currDate;
-	data.checkout = currDate;
+	var r1 = Math.floor(Math.random() * 7) + 1;
+	var r2 = Math.floor(Math.random() * 7) + 1;
+
+	if (r1 < r2) {
+		data.checkin = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + (cDate.getDate()+r1);
+		data.checkout = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + (cDate.getDate()+r2);
+	} else {
+		data.checkin = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + (cDate.getDate()+r2);
+		data.checkout = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + (cDate.getDate()+r1);
+	}
 	data.rooms = Math.floor(Math.random() * 5) + 1;
 	data.hotelid = hotelids[Math.floor(Math.random()*hotelids.length)];
 
 	data.bot = 'bot';
 	data.t = "book";
 	data.cd = currDate;
+	data.ccheckin = currDate;
+	data.ccheckout = invMaxDate;
 
 	createandSendMessage(data);
 }

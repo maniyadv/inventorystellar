@@ -48,6 +48,13 @@
     	    		<span class='totalrooms'><?php echo ' '; ?> </span>
     	    	</div>
 
+    	    	<!-- Reset data -->
+    	    	<div class='row'>
+    	    		<div class='input-group' id='reset'>
+    	    			<input type='button' class='btn btn-primary' name='reset' value='Reset' > 
+    	    		</div>
+    	    	</div>
+
     	    	<div class='row' style="margin-top:30px;">
 
 				<form class='navbar-form' >
