@@ -9,8 +9,9 @@ var invMaxDate = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + (cDate
 var roomCount;
 var oldRoomCount = 0;
 var newRoomCount = 0;
-var botIntensity = 20000;
+var botIntensity = 5000;
 var botInterval;
+var resetClicked = false;
 
 // Websocket Global object variable
 var socket = null;
@@ -29,13 +30,17 @@ $('#search').click(function() {
 // Reset button click handling 
 $('#reset').click(function() {
 
+	resetClicked = true;
 	sendResetRequest();
 });
 
 // Roll numbers 
 function rollNumbers(start, end, id) {
-	$(id).html('');
+	if (start > end) {
+		return;
+	}
 
+	$(id).html('');
 	var beginRolling = function() {
 	    $(id).html(start);
 
@@ -56,11 +61,11 @@ function processFields() {
 
 		var intensity = $('#intensity').val();
 		if (intensity == "slow") {
-			botIntensity = 30000;
+			botIntensity = 15000;
 		} else if (intensity = "medium") {
-			botIntensity = 20000;
-		} else if (intensity = "fast") {
 			botIntensity = 10000;
+		} else if (intensity = "fast") {
+			botIntensity = 5000;
 		}
 		clearInterval(botInterval);
 		setInterval(function() {

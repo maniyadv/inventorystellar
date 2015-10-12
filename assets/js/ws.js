@@ -259,36 +259,35 @@ function autoSearch(data) {
 
 	var invntDates = [];
 	for(var key in data) {
-		$('#availability').append('<div class="row invntbody invnt'+data[key].id+'">');
-		$('#availability .invnt'+data[key].id).append('<span class="idata idataHotel mselect'+data[key].id+'">'+data[key].name+'</span>');
+		$('#availability').append('<div class="row invntbody" id ="invnt'+data[key].id+'">');
+		$('#availability #invnt'+data[key].id).append('<span class="idata idataHotel mselect'+data[key].id+'">'+data[key].name+'</span>');
 
-		localData[data[key].id] = [];
+		if (!localData[data[key].id]) {
+			localData[data[key].id] = [];
+		}
 
 		for(var keys in data[key].info) {
 			invntDates[keys] = [keys];
 			newRoomCount = parseInt(newRoomCount) + parseInt(data[key].info[keys]);
 
-			var start = '0', end = '0';
-			if (localData[data[key].id] && localData[data[key].id][keys]) {
-				start = localData[data[key].id][keys];
-			}
-
-			end = data[key].info[keys];
-
-			$('.invnt'+data[key].id+' .mavail-'+keys).removeClass('green red');
+			$('#'+data[key].id+'-'+keys).removeClass('green red');
 			if (localData && localData[data[key].id] && localData[data[key].id][keys] && localData[data[key].id][keys] != data[key].info[keys]) {
-				$('#availability .invnt'+data[key].id).append('<span class="idata mavail-'+keys+'" style="background-color:#acdfb5">0</span>');
-				rollNumbers(start, end, '.invnt'+data[key].id+' .mavail-'+keys);
-				$('.invnt'+data[key].id+' .mavail-'+keys).addClass('green');
+				$('#invnt'+data[key].id).append('<span class="idata" id="'+data[key].id+'-'+keys+'">'+localData[data[key].id][keys]+'</span>');
+				if (!resetClicked) {
+					$('#'+data[key].id+'-'+keys).addClass('green');
+					$('#'+data[key].id+'-'+keys).slideUp('medium');					
+					$('#'+data[key].id+'-'+keys).html(data[key].info[keys]);
+					$('#'+data[key].id+'-'+keys).slideDown('medium');
+				}
 			} else if (data[key].info[keys] < 1) {
-				$('#availability .invnt'+data[key].id).append('<span class="idata mavail-'+keys+'" style="background-color:#ecc8c8">0</span>');
-				rollNumbers(start, end, '.invnt'+data[key].id+' .mavail-'+keys);
-				$('.invnt'+data[key].id+' .mavail-'+keys).addClass('red');
+				$('#invnt'+data[key].id).append('<span class="idata" id="'+data[key].id+'-'+keys+'">'+data[key].info[keys]+'</span>');
+				if (!resetClicked) {
+					$('#'+data[key].id+'-'+keys).addClass('red');
+				}
 			} else {
-				$('#availability .invnt'+data[key].id).append('<span class="idata mavail-'+keys+'" >'+data[key].info[keys]+'</span>');
+				$('#invnt'+data[key].id).append('<span class="idata" id="'+data[key].id+'-'+keys+'">'+data[key].info[keys]+'</span>');
 			}
 
-			localData[data[key].id] = data[key].info;
 			localData[data[key].id][keys] = data[key].info[keys];
 			hotelData[data[key].id] = data[key].name;
 		}
@@ -299,9 +298,9 @@ function autoSearch(data) {
 	}
 
 	//$('.currentdate').html('Date: ' +currDate);
-	//rollNumbers(oldRoomCount, newRoomCount, '.totalrooms');
 	$('.totalrooms').html(newRoomCount);
 	oldRoomCount = newRoomCount;
+	resetClicked = false;
 }
 
 // Parse manual search data 
@@ -379,6 +378,7 @@ function botBooking() {
 	data.cd = currDate;
 	data.ccheckin = currDate;
 	data.ccheckout = invMaxDate;
+	console.log(data);
 
 	createandSendMessage(data);
 }
