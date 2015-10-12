@@ -4,6 +4,7 @@
 var hotelids = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
 var initBot = false;
 var localData = [];
+var hotelData = [];
 
 // Ready 
 $(document).ready(function() {
@@ -167,9 +168,12 @@ function routeMessage(msg) {
 						manualSearch(data);
 					}
 
+					// Initiate bot after auto search response 
 					if (!initBot) {
 						initBot = true;
-						setInterval(function(){botBooking();}, 10000);
+						setInterval(function() {
+							botInterval = botBooking();
+						}, botIntensity);
 					}
 					break;
 
@@ -236,6 +240,7 @@ function autoSearch(data) {
 				$('.availability_list').append('<span class="autorow mavail'+data[key].id+'">'+data[key].info[currDate]+'</span>');
 			}
 			localData[data[key].id] = data[key].info[currDate];
+			hotelData[data[key].id] = data[key].name;
 		}
 	}
 
@@ -271,7 +276,7 @@ function manualSearch(data) {
 	checkAvailability();
 }
 
-//Check room availability 
+// Check room availability 
 function checkAvailability() {
 	$('.searchinfo').show();
 }

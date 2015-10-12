@@ -5,6 +5,8 @@ var DEFAULT_BOOKING_DAYS = 0;
 var cDate = new Date();
 var currDate = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + cDate.getDate();
 var roomCount = 0;
+var botIntensity = 20000;
+var botInterval;
 
 // Websocket Global object variable
 var socket = null;
@@ -25,9 +27,25 @@ function processFields() {
     // Intensity field 
 	$('#intensity').on('change', function (e) {
 		console.log('Intensity: '+ $('#intensity').val());
+
+		var intensity = $('#intensity').val();
+		if (intensity == "slow") {
+			botIntensity = 30000;
+		} else if (intensity = "medium") {
+			botIntensity = 20000;
+		} else if (intensity = "fast") {
+			botIntensity = 10000;
+		}
+		clearInterval(botInterval);
+		setInterval(function() {
+			botInterval = botBooking();
+		}, botIntensity);
+
     });
 
-    // Current Date setting 
+	console.log(botIntensity);
+
+	// Current Date setting 
 	var checkinDate = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + cDate.getDate();
 	var checkoutDate = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + (cDate.getDate()+DEFAULT_BOOKING_DAYS);
 	$('input[name=checkin]').val(checkinDate);
