@@ -224,6 +224,9 @@ function autoSearch(data) {
 	var roomCount = 0;
 	$('.totalrooms').html('');
 
+	/*
+	 * Inventory for current date only 
+	 * 
 	$('#availability').html('');
 	$('#availability').html('<div class="hotel_list"></div><div class="availability_list"></div>');
 
@@ -243,6 +246,38 @@ function autoSearch(data) {
 			hotelData[data[key].id] = data[key].name;
 		}
 	}
+	*/
+
+	/*
+	 * Inventory for 7 days 
+	 */
+	$('#availability').html('');
+
+	$('#availability').append('<div class="row invnthead">');
+	$('#availability .invnthead').append('<span class="ihead">#</span>');
+
+	var invntDates = [];
+	for(var key in data) {
+		$('#availability').append('<div class="row invntbody '+data[key].id+'">');
+		$('#availability .'+data[key].id).append('<span class="idata idataHotel mselect'+data[key].id+'">'+data[key].name+'</span>');
+
+		for(var keys in data[key].info) {
+			invntDates[keys] = [keys];
+			roomCount = parseInt(roomCount) + parseInt(data[key].info[keys]);
+
+			if (localData && localData[data[key].id] && localData[data[key].id] != data[key].info[currDate]) {
+				$('#availability .'+data[key].id).append('<span class="idata mavail'+data[key].id+'" style="background-color:#acdfb5">'+data[key].info[keys]+'</span>');
+			} else if (data[key].info[currDate] < 1) {
+				$('#availability .'+data[key].id).append('<span class="idata mavail'+data[key].id+'" style="background-color:#ecc8c8">'+data[key].info[keys]+'</span>');
+			} else {
+				$('#availability .'+data[key].id).append('<span class="idata mavail'+data[key].id+'" >'+data[key].info[keys]+'</span>');
+			}
+		}
+	}
+
+	for(var date in invntDates) {
+		$('#availability .invnthead').append('<span class="ihead">'+date+'</span>');
+	}
 
 //	$('.currentdate').html('Date: ' +currDate);
 	$('.totalrooms').html(roomCount);
@@ -253,11 +288,16 @@ function manualSearch(data) {
 	var UA = false;
 	$('#listing').html('');
 
+	$('#listing').append('<div class="row listhead">');
+	$('#listing .listhead').append('<span class="lhead">#</span>');
+
+	var listDates = [];
 	for(var key in data) {
-		$('#listing').append('<div class="'+data[key].id+'">');
-		$('#listing .'+data[key].id).append('<span class="mrow mselect'+data[key].id+'">'+data[key].name+'</span>');
+		$('#listing').append('<div class="row '+data[key].id+'">');
+		$('#listing .'+data[key].id).append('<span class="mrow ldataHotel mselect'+data[key].id+'">'+data[key].name+'</span>');
 
 		for(var keys in data[key].info) {
+			listDates[keys] = [keys];
 			if (parseInt(data[key].info[keys]) < parseInt(roomCount)) {
 				UA = true;
 				$('#listing .'+data[key].id).append('<span class="mrow mavail'+data[key].id+'" style="background-color:#ecc8c8">UA</span>');
@@ -271,6 +311,10 @@ function manualSearch(data) {
 		if (UA) {
 			disableBooking('book-'+data[key].id);
 		}
+	}
+
+	for(var date in listDates) {
+		$('#listing .listhead').append('<span class="lhead">'+date+'</span>');
 	}
 
 	checkAvailability();

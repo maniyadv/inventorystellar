@@ -10,11 +10,60 @@
 	background-color: #ecc8c8;
 }
 
+.ihead {
+	float: left;
+    padding: 5px;
+    width: 100px;
+    border: 1px solid #cccccc;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 6px;
+    margin-right: 6px;
+    /*color: #ffffff;
+    background-color: #595858;*/
+}
+
+.idata {
+	float: left;
+    padding: 5px;
+    width: 100px;
+    border: 1px solid #cccccc;
+    text-align: center;
+    margin-top: 6px;
+    margin-right: 6px;
+}
+
+.idataHotel {
+	color: #ffffff;
+    background-color: #337cbb;
+}
+
+.lhead {
+	float: left;
+    padding: 5px;
+    width: 100px;
+    border: 1px solid #cccccc;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 6px;
+    margin-right: 6px;
+    /*color: #ffffff;
+    background-color: #595858;*/
+}
+
+.ldataHotel {
+	color: #ffffff;
+    background-color: #337cbb;
+}
+
 .mrow {
 	float: left;
     padding: 5px;
-    width: 75px;
+    width: 100px;
     border: 1px solid #cccccc;
+    text-align: center;
+    margin-top: 6px;
+    margin-right: 6px;
 }
 
 .brow {
@@ -35,7 +84,6 @@
     font-size: 20px;
     position: absolute; 	
     float: left; 
-    left: 105px;
 }
 
 .totalroomdiv {

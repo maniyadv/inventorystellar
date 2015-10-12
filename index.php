@@ -53,7 +53,7 @@
 				<form class='navbar-form' >
 
 					<!-- Booking Intensity -->
-					<div class='form-group'>
+					<div class='row form-group'>
 						<?php echo 'Bot Booking Intensity'; ?> </br> 
 						<select class='form-control' name='intensity' id='intensity'>
 							<option value='slow'>Slow</option>
@@ -64,17 +64,20 @@
 					</br> </br> 
 
 					<!-- Hotel Info -->
-					<div class='currentinfo' style='display:none'>
+					<div class='row currentinfo' style='display:none'>
 						<div class='form-group'>
 							<div class='currentdate'><?php echo ' '; ?> </div>
 							<?php echo 'Current Status'; ?>
-							<div class='input-group' id='availability'></div>
 						</div>
-						</br> </br>
-					</div> 
+					</div>
+
+					<div class='form-group'>
+						<div class='input-group' id='availability'></div>
+					</div>
+					</br> </br>
 
 					<!-- Email -->
-					<div class='form-group'>
+					<div class='row form-group'>
 						<div class='input-group' id='email'>
 							<?php echo 'Email'; ?> </br> 
 							<input type='email' class='form-control' name='email' placeholder='name@example.com' >
@@ -83,7 +86,7 @@
 					</br> </br> 
 
 					<!-- Booking Info -->
-					<div class='bookinfo' style='display:none'>
+					<div class='row bookinfo' style='display:none'>
 
 						<!-- Check-in Date -->
 						<div class='form-group'>

@@ -2,8 +2,10 @@
 var DEFAULT_ROOMS = 1;
 var DEFAULT_IN_PROCESS = ' in process!';
 var DEFAULT_BOOKING_DAYS = 0;
+var DEFAULT_INV_MAX_DAYS = 6;
 var cDate = new Date();
 var currDate = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + cDate.getDate();
+var invMaxDate = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + (cDate.getDate()+DEFAULT_INV_MAX_DAYS);
 var roomCount = 0;
 var botIntensity = 20000;
 var botInterval;
@@ -43,7 +45,7 @@ function processFields() {
 
     });
 
-	console.log(botIntensity);
+	console.log('Bot Intensity: '+botIntensity);
 
 	// Current Date setting 
 	var checkinDate = cDate.getFullYear() + '-' + (cDate.getMonth()+1) + '-' + cDate.getDate();
@@ -143,7 +145,7 @@ function sendAutoSearchRequest() {
 	data.type = "auto";
 	data.cd = currDate;
 	data.checkin = currDate;
-	data.checkout = currDate;
+	data.checkout = invMaxDate;
 	data.rooms = ''+DEFAULT_ROOMS;
 	createandSendMessage(data);
 }
